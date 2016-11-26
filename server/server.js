@@ -7,6 +7,7 @@ var {Todo}      = require('./models/todo.js');
 var {User}      = require('./models/user.js');
 
 var app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(bodyPaser.json());
 
@@ -44,6 +45,6 @@ app.get('/todos/:todoID', (req, res) => {
 });
 
 
-app.listen(3000, () => console.log(`Fire on port 3000`));
+app.listen(PORT, () => console.log(`Fire on port ${PORT}`));
 
 module.exports = {app};
