@@ -22,6 +22,12 @@ app.post('/todos', (req, res) => {
     });
 });
 
+app.get('/todos', (req, res) => {
+    Todo.find().then((todos) => {
+        res.json({todos});
+    }, (e) => res.status(400).json(e));
+});
+
 
 
 app.listen(3000, () => console.log(`Fire on port 3000`));
