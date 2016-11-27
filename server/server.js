@@ -90,8 +90,20 @@ app.post('/users', (req, res) => {
     }).then((token) => {
         res.header('x-auth', token).json(user);
     }).catch((e) => {
-        console.log(e);
-        res.status(400).json(e);
+        res.status(400).send();
+    });
+});
+
+// POST login
+app.post('/users/login', (req, res) => {
+    var body = _.pick(req.body, ['email', 'password']);
+
+    User.findByCredentials(body.email, body.password).then((user) => {
+        return user.generateAuthToken().then((token) => {
+            res.header('x-auth', token).json(user);
+        });
+    }).catch((e) => {
+        res.status(400).send();
     });
 });
 
