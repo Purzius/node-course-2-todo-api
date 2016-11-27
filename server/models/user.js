@@ -56,6 +56,26 @@ UserSchema.methods.generateAuthToken = function() {
     });
 };
 
+UserSchema.statics.findByToken = function (token) {
+    var User = this;
+    var decoded;
+
+    try {
+        decoded = jwt.verify(token, 'abc123');
+    } catch (error) {
+        // return new Promise((resolve, reject) => {
+        //     reject();
+        // });
+        return Promise.reject('Verification failed.');
+    }
+
+    return User.findOne({
+        '_id': decoded._id,
+        'tokens.token': token,
+        'tokens.access': 'auth'
+    });
+}
+
 // {
 //     email: 'mads@mail.com',
 //     password: '$_!512astd32t65qteqtqetgaetgqeaty31ytgwrtjn4735y624532',
