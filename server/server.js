@@ -78,6 +78,22 @@ app.patch('/todos/:todoID', (req, res) => {
     }).catch((e) => res.status(400).send());
 });
 
+// POST /users
+app.post('/users', (req, res) => {
+    var body = _.pick(req.body, ['email', 'password']);
+    var user = new User(body);
+
+    user.save().then(() => {
+        // user here is the same as up the chain. It's an object.
+        return user.generateAuthToken();
+    }).then((token) => {
+        res.header('x-auth', token).json(user);
+    }).catch((e) => {
+        console.log(e);
+        res.status(400).json(e);
+    });
+});
+
 app.listen(PORT, () => console.log(`Fire on port ${PORT}`));
 
 module.exports = {app};
