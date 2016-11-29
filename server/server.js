@@ -111,6 +111,12 @@ app.get('/users/me', authenticate, (req, res) => {
     res.json(req.user);
 });
 
+app.delete('/users/me/token', authenticate, (req, res) => {
+    req.user.removeToken(req.token).then(() => {
+        res.status(200).send();
+    }, (e) => res.status(400).send());
+});
+
 app.listen(PORT, () => console.log(`Fire on port ${PORT}`));
 
 module.exports = {app};
